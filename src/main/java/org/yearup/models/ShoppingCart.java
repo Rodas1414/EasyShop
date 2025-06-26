@@ -25,7 +25,7 @@ public class ShoppingCart
 
     public void add(ShoppingCartItem item)
     {
-        items.put(item.getProductId(), item);
+        items.put(item.getProduct().getProductId(), item);
     }
 
     public ShoppingCartItem get(int productId)
@@ -35,12 +35,9 @@ public class ShoppingCart
 
     public BigDecimal getTotal()
     {
-        BigDecimal total = items.values()
-                                .stream()
-                                .map(i -> i.getLineTotal())
-                                .reduce( BigDecimal.ZERO, (lineTotal, subTotal) -> subTotal.add(lineTotal));
-
-        return total;
+        return items.values()
+                .stream()
+                .map(ShoppingCartItem::getLineTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-
 }
